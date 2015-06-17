@@ -1,34 +1,41 @@
-/**
- * Created by silviue on 8/10/13.
- */
- describe("calculate nextGen", function () {
-  it("returns empty grid",function  (
-    ) {
-    expect(nextGen([[]])).toEqual([[]]);
-})
-  it("cell dies if only cell", function(){
-    expect(nextGen([["*"]])).toEqual([["."]]);
-})
-
-  describe("identify neighbours", function(){
-     var neighbours = getNeighboursFor ([[".", "*", "."]],0,1);
-     expect(neighbours).toEqual([[0,0],[0,2]]);
+describe("nextgen", function(){
+  describe("empty grid",function(){
+    it("returns empty grid",function() {
+      expect(function(){nextGen("0 0")}).toThrowError("invalid input");
+    });
   });
-  describe("for 2 alive neighbours should identify cell for survival",function(){
-    var grid = [[".", "*", "."]];
-     var neighbours = getNeighboursFor (grid,0,1);
-     expect(cellSurvives(grid,neighbours)).toEqual(true);
 
+  describe("single life organism", function() {
+    it("should die", function(){
+      expect(nextGen("1 1 \n*")).toEqual("1 1\n.");
+    });
+  });
+});
+describe("parsing",function(){
+  describe("empty grid description", function(){
+    it("is not accepted",function(){
+      expect(function(){Grid("0 0\n")}).toThrowError("invalid input")    
+    })
   })
 
-  describe("single row",function(){
-    it("alone cell dies",function(){
-        expect(nextGen([[".", "*", "."]])).toEqual([[".",".","."]]);
+  describe("single life organism", function(){
+    it("return grid with one organism", function(){
+      expect(Grid("1 1\n*").grid).toEqual([[1]])
     })
-    it("cell surrounded by 2 cells survives",function(){
-        expect(nextGen([["*", "*", "*"]])).toEqual([[".","*","."]]);
-    })
+  })
 
+  describe("bigger grids",function(){
+    it("generates structure as described by header",function(){
+      var parsedGrid = Grid("2 3\n...\n...").grid;
+
+      expect(parsedGrid.length).toEqual(2);
+      expect(parsedGrid[0].length).toEqual(3);
+    })
+  })
+
+  describe("2 by 2 empty grid", function(){
+    xit("returns empty 2 by 2 grid", function(){
+      expect(Grid("2 2\n..\n..").grid).toEqual([[0,0],[0,0]])
+    })
+  })
 })
-  
-});

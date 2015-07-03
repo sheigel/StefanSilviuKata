@@ -8,29 +8,31 @@ function nextGen (inputString) {
 
 function Grid (gridDescription) {
 
-	function generateGridStructure (gridDefinition) {
+	function validateGridDefinition (gridDefinition) {
 		var lines = Number(gridDefinition.split(" ")[0]);
 		var columns = Number(gridDefinition.split(" ")[1]);
 
 		if(lines===0 || columns===0)
-			throw new Error("invalid input");
-
-		var result = []
-		for (var i = 0; i < lines; i++) {
-			result[i]=[];
-			for (var j = 0; j < columns; j++) {
-				result[i][j]=null;
-			};
-		};
-		return result;
+			throw new Error("invalid input");	
 	};
+
+	function parseCell(cellString){
+		return cellString === "." ? 0 : 1;
+	}
 
 	function parseGridDescription(inputString) {
 		var gridDefinition = inputString.split("\n")[0];
-		var innerGrid = generateGridStructure(gridDefinition);
-		if(inputString.indexOf("*") > 0)
-			return [[1]];
-		return innerGrid;
+		validateGridDefinition(gridDefinition);
+
+		return inputString.split("\n").slice(1).map(
+			function(el){
+				var result = []; 
+				for(var idx = 0; idx < el.length; idx++){ 
+					result.push(parseCell(el[idx]));
+				} 
+				return result;
+			});
+		
 	};
 
 	var grid = parseGridDescription(gridDescription);

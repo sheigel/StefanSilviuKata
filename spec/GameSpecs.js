@@ -11,31 +11,29 @@ describe("nextgen", function(){
     });
   });
 });
+
 describe("parsing",function(){
-  describe("empty grid description", function(){
+  describe("0 by 0 grid", function(){
     it("is not accepted",function(){
       expect(function(){Grid("0 0\n")}).toThrowError("invalid input")    
     })
   })
 
-  describe("single life organism", function(){
-    it("return grid with one organism", function(){
+  describe("1 by 1 grid with one asterisk", function(){
+    it("returns grid with one live cell(1)", function(){
       expect(Grid("1 1\n*").grid).toEqual([[1]])
     })
   })
 
-  describe("bigger grids",function(){
-    it("generates structure as described by header",function(){
-      var parsedGrid = Grid("2 3\n...\n...").grid;
-
-      expect(parsedGrid.length).toEqual(2);
-      expect(parsedGrid[0].length).toEqual(3);
+  describe("2 by 2 grid with only dots", function(){
+    it("returns 2 by 2 grid with dead cells(0)", function(){
+      expect(Grid("2 2\n..\n..").grid).toEqual([[0,0],[0,0]])
     })
   })
 
-  describe("2 by 2 empty grid", function(){
-    xit("returns empty 2 by 2 grid", function(){
-      expect(Grid("2 2\n..\n..").grid).toEqual([[0,0],[0,0]])
+  describe("2 by 3 with dots and 2 asterisk", function(){
+    it("returns 2 by 3 grid with 2 live cells(1) amongst dead cells(0)", function(){
+      expect(Grid("2 3\n.*.\n..*").grid).toEqual([[0,1,0],[0,0,1]])
     })
   })
 })
